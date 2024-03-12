@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(originPatterns = "**")
 public class AlbumsController {
     private final JsonPlaceholderService jsonPlaceholderService;
-    private final String resource = "/albums";
+    private final String resource = "albums";
 
 
     @Audit
@@ -41,7 +41,6 @@ public class AlbumsController {
     @Cacheable(value = "albumsCachePost")
     @PostMapping({"", "/"})
     public ResponseEntity<?> albumsPost(@RequestBody String album) {
-
         return jsonPlaceholderService.postRequest(resource, album);
     }
 

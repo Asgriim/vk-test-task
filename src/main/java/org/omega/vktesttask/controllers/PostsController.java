@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(originPatterns = "**")
 public class PostsController {
     private final JsonPlaceholderService jsonPlaceholderService;
-    private final String resource = "/posts";
+    private final String resource = "posts";
 
     @Audit
     @Cacheable(value = "postsCacheAll")
@@ -40,7 +40,6 @@ public class PostsController {
     @Cacheable(value = "postsCachePost")
     @PostMapping({"", "/"})
     public ResponseEntity<?> postsPost(@RequestBody String post) {
-
         return jsonPlaceholderService.postRequest(resource, post);
     }
 

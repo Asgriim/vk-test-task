@@ -5,6 +5,7 @@ import org.hibernate.annotations.Cache;
 import org.omega.vktesttask.aspect.Audit;
 import org.omega.vktesttask.dto.UserDTO;
 import org.omega.vktesttask.entity.Role;
+import org.omega.vktesttask.exceptions.EmptyRoleException;
 import org.omega.vktesttask.service.UserService;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,9 @@ public class AuthController {
     @Audit
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody UserDTO userDTO) {
-
+        if (userDTO.getRoles() == null || userDTO.getRoles().isEmpty()) {
+            throw new EmptyRoleException();
+        }
         if(userDTO.getRoles().contains(Role.ADMIN)) {
             return ResponseEntity.badRequest().body("Only admin can register admin");
         }
