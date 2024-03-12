@@ -2,15 +2,18 @@ package org.omega.vktesttask.security;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
 @Service
+@Data
 public class JWT {
     @Value("${security.jwt.secret}")
     private String secret;
+
     @Value("${security.jwt.live.time}")
     private long liveTime;
 

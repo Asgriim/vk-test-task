@@ -11,12 +11,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 @SpringBootApplication
 @RequiredArgsConstructor
+@EnableCaching
 public class VkTestTaskApplication implements CommandLineRunner {
 
 

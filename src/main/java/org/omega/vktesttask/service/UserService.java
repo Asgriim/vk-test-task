@@ -18,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -51,9 +52,7 @@ public class UserService implements UserDetailsService {
         if (user.getPassword() == null || user.getPassword().isEmpty()) {
             throw new EmptyPasswordException();
         }
-        if (user.getRoleEntities() == null || user.getRoleEntities().isEmpty()) {
-            throw new EmptyRoleException();
-        }
+
         return true;
     }
 
@@ -61,6 +60,9 @@ public class UserService implements UserDetailsService {
         if (isValidUser(user)) {
             if (userRepository.existsByLogin(user.getLogin())) {
                 throw new UserAlreadyExistException();
+            }
+            if (user.getRoleEntities() == null || user.getRoleEntities().isEmpty()) {
+                throw new EmptyRoleException();
             }
             userRepository.save(user);
         }
@@ -83,7 +85,7 @@ public class UserService implements UserDetailsService {
                 throw new InvalidLoginOrPasswordException();
             }
             String jwtToken = jwt.generateToken(user.getLogin());
-            return new TokenDTO(jwtToken);
+            return new TokenDTO(jwtToken, jwt.getLiveTime());
         }
         //can't reach here
         throw new InvalidLoginOrPasswordException();
@@ -99,7 +101,25 @@ public class UserService implements UserDetailsService {
         adminUser.getRoles().add(Role.ADMIN);
 
         register(adminUser);
-        System.out.println(loadUserByUsername(adminLogin));
+
+        UserDTO albumUser = new UserDTO();
+        albumUser.setLogin("album");
+        albumUser.setPassword("album");
+        albumUser.setRoles(List.of(Role.ALBUM_DELETER, Role.ALBUM_VIEWER, Role.ALBUM_CREATOR, Role.ALBUM_EDITOR));
+        register(albumUser);
+
+
+        UserDTO postsUser = new UserDTO();
+        postsUser.setLogin("post");
+        postsUser.setPassword("post");
+        postsUser.setRoles(List.of(Role.POST_VIEWER, Role.POST_CREATOR, Role.POST_DELETER, Role.POST_EDITOR));
+        register(postsUser);
+
+        UserDTO userUser = new UserDTO();
+        userUser.setLogin("user");
+        userUser.setPassword("user");
+        userUser.setRoles(List.of(Role.USER_VIEWER, Role.USER_CREATOR, Role.USER_EDITOR, Role.USER_DELETER));
+        register(userUser);
     }
 
     public void deleteByLogin(String login){
