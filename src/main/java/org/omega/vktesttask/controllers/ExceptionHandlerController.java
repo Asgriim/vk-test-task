@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class ExceptionHandlerController {
+
     @ExceptionHandler(UserAlreadyExistException.class)
     public ResponseEntity<?> handleUAEE() {
         return ResponseEntity.badRequest().body("This user already exists");

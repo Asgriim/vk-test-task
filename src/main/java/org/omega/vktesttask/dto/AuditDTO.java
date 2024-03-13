@@ -22,7 +22,9 @@ public class AuditDTO {
     public AuditDTO(AuditEntity auditEntity) {
         this.id = auditEntity.getId();
         this.date = auditEntity.getDate();
-        this.user = new UserDTO(auditEntity.getUser());
+        if (auditEntity.getUser() != null) {
+            this.user = new UserDTO(auditEntity.getUser());
+        }
         this.method = auditEntity.getMethod();
         this.endpoint = auditEntity.getEndpoint();
         this.requestArguments = auditEntity.getRequestArguments();
